@@ -32,6 +32,7 @@ function Pweet({ pweet, isOwner }) {
       <div key={pweet.id}>
         <h4>{pweet.content}</h4>
 
+        {pweet.fileUrl && <img src={pweet.fileUrl} width="50px" height="50px" />}
         {isOwner && (
           <>
             <button onClick={onDelete}>D</button>
