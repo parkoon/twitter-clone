@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { storeService } from 'fbase'
+import { storeService, fileStorageService } from 'fbase'
 
 function Pweet({ pweet, isOwner }) {
   const [editing, setEditing] = useState(false)
@@ -8,6 +8,7 @@ function Pweet({ pweet, isOwner }) {
     const ok = window.confirm('정말로 지우시겠어요?')
     if (ok) {
       await storeService.doc(`pweets/${pweet.id}`).delete()
+      await fileStorageService.refFromURL(pweet.fileUrl).delete()
     }
   }
 

@@ -10,12 +10,29 @@ function App() {
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
+      setUser(
+        user
+          ? {
+              displayName: user.displayName,
+              uid: user.uid,
+              updateProfile: (args) => user.updateProfile(args),
+            }
+          : null
+      )
       setIsLoggedIn(!!user)
       setInit(true)
-      setUser(user ? user : null)
     })
   }, [])
-  return init && <AppRouter isLoggedIn={isLoggedIn} user={user} />
+
+  const refreshUser = () => {
+    const user = authService.currentUser
+    setUser({
+      displayName: user.displayName,
+      uid: user.uid,
+      updateProfile: (args) => user.updateProfile(args),
+    })
+  }
+  return init && <AppRouter refreshUser={refreshUser} isLoggedIn={isLoggedIn} user={user} />
 }
 
 export default App
