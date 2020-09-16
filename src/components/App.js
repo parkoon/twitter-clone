@@ -5,7 +5,6 @@ import { authService } from 'fbase'
 
 function App() {
   const [init, setInit] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -19,7 +18,6 @@ function App() {
             }
           : null
       )
-      setIsLoggedIn(!!user)
       setInit(true)
     })
   }, [])
@@ -32,7 +30,7 @@ function App() {
       updateProfile: (args) => user.updateProfile(args),
     })
   }
-  return init && <AppRouter refreshUser={refreshUser} isLoggedIn={isLoggedIn} user={user} />
+  return init && <AppRouter refreshUser={refreshUser} isLoggedIn={!!user} user={user} />
 }
 
 export default App
