@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { storeService } from 'fbase'
+import Pweet from 'components/Pweet'
 
 function Home({ user }) {
   const [value, setValue] = useState('')
@@ -45,9 +46,7 @@ function Home({ user }) {
 
       <div>
         {pweets.map((pweet) => (
-          <div key={pweet.id}>
-            <h4>{pweet.content}</h4>
-          </div>
+          <Pweet key={pweet.id} pweet={pweet} isOwner={pweet.creatorId === user.uid} />
         ))}
       </div>
     </>
