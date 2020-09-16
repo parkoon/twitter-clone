@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import { authService } from 'fbase'
+import { authService, firebaseInstance } from 'fbase'
 
 function Auth() {
-  const [values, setValues] = useState({})
+  const [values, setValues] = useState({
+    email: '',
+    password: '',
+  })
   const [error, setError] = useState('')
   const [newAccount, setNewAccount] = useState(true)
   const onSubmit = async (event) => {
     event.preventDefault()
-
-    console.log(values)
 
     try {
       let res
@@ -31,6 +32,17 @@ function Auth() {
     } = event
     console.log(name, value)
     setValues({ ...values, [name]: value })
+  }
+
+  const onSocialClick = async ({ target: { name } }) => {
+    let provider
+    if (name === 'google') {
+      provider = new firebaseInstance.auth.GoogleAuthProvider()
+    }
+    if (name === 'github') {
+      provider = new firebaseInstance.auth.GithubAuthProvider()
+    }
+    await authService.signInWithPopup(provider)
   }
   return (
     <div>
@@ -57,8 +69,12 @@ function Auth() {
       </form>
 
       <div>
-        <button>구글로 시작하기</button>
-        <button>깃헙으로 시작하기</button>
+        <button name="google" onClick={onSocialClick}>
+          구글로 시작하기
+        </button>
+        <button name="github" onClick={onSocialClick}>
+          깃헙으로 시작하기
+        </button>
       </div>
     </div>
   )
